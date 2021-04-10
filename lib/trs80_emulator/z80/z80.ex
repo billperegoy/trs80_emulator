@@ -5,7 +5,7 @@ defmodule Trs80Emulator.Z80 do
           state: State.t()
         }
 
-  defstruct [:state]
+  defstruct state: %State{}
 
   @doc """
   * Clears program counter
