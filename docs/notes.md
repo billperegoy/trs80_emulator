@@ -31,3 +31,7 @@ and need more general math than the simple program counter increments.
 ## Next Goal
 Get a simple linear instruction fetch working and then decode a couple of simple
 instructions.
+
+I'm noticing as I'm doing this that my code structure is feeling a bit
+object-oriented. I'm delegating functions at the trs80 level to those at the z80
+level. Right now, I'm not sure if that's a bad pattern or not.
