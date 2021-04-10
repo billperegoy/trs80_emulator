@@ -10,3 +10,24 @@ math of the processor.
 I'm trying to work right from the spec and build this up using test driven
 design. I'm wondering if I can build a solid representation of what the hardware
 does that can be simulated and maybe later synthesized into an FPGA.
+
+## Pattern matching Caveats
+When you pattern match on binaries, it's easy to get mixed up and forget that
+when pattern matching multi-byte binaries, the matched values are simple Elixir
+integers. You then may accidentally compare binaries and integers with bad
+results. The lack of strong type checking makes this more difficult than I wish
+it would be.
+
+## Possible solutions to the above
+If I can generalize all of the 8/16 bit math into one library, this may make the
+above easier to deal with. I'll try this out when I design the accumulator logic
+and need more general math than the simple program counter increments.
+
+## Current State
+* Register state defined
+* Reset pin emulated
+* Simple tick function defined that fetches an instruction
+
+## Next Goal
+Get a simple linear instruction fetch working and then decode a couple of simple
+instructions.
