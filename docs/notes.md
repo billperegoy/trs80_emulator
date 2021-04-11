@@ -44,3 +44,18 @@ This will be the first prrof of concept
 * FE will have a `reset` and a `tick` button which will advance the counter
 * These actions will trigger a REST POST which will update the genserver state
   and return the new state to the FE
+
+# Genserver basics
+```
+# Each new user should initialze computer state like this.
+# This PID should be held by the client and passed in when
+# we nake API calls. This will allow each cleint to have a unique
+# set of state.
+#
+{:ok, pid} = Trs80Emulator.Trs80.Server.start_link()
+
+
+# We can then fetch the state like this
+#
+Trs80Emulator.Trs80.Server.fetch_state()
+```
