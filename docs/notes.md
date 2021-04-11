@@ -35,3 +35,12 @@ instructions.
 I'm noticing as I'm doing this that my code structure is feeling a bit
 object-oriented. I'm delegating functions at the trs80 level to those at the z80
 level. Right now, I'm not sure if that's a bad pattern or not.
+
+# Hooking up the Front End
+This will be the first prrof of concept
+* We need to store the TRS80 state in a genserver
+* When the FE connects, it will create a new genserver instance and store
+  initial empty state
+* FE will have a `reset` and a `tick` button which will advance the counter
+* These actions will trigger a REST POST which will update the genserver state
+  and return the new state to the FE
