@@ -1,7 +1,7 @@
 defmodule Trs80Emulator.Trs80Test do
   use Trs80Emulator.DataCase
 
-  alias Trs80Emulator.Trs80
+  alias Trs80Emulator.{Trs80, Z80}
 
   setup do
     {:ok, %{trs80: %Trs80{}}}
@@ -46,6 +46,19 @@ defmodule Trs80Emulator.Trs80Test do
 
       trs80 = Trs80.tick(trs80)
       assert trs80.z80.ir == <<14>>
+    end
+  end
+
+  describe "executes instructions" do
+    test "single sinstruction", %{trs80: trs80} do
+      # Load a from b
+      # 0b01111000
+      registers = %Z80.Registers{b: <<27>>}
+      z80 = %Z80{registers: registers}
+      trs80 = %{trs80 | z80: z80, ram: [<<0b01111000>>]}
+
+      trs80 = Trs80.reset(trs80)
+      assert trs80.z80.registers.a == <<27>>
     end
   end
 end

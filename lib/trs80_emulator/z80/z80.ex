@@ -1,4 +1,6 @@
 defmodule Trs80Emulator.Z80 do
+  alias Trs80Emulator.Z80.Registers
+
   @type t :: %__MODULE__{
           registers: Registers.t(),
           alternate_registers: Registers.t(),
@@ -12,7 +14,6 @@ defmodule Trs80Emulator.Z80 do
         }
 
   defstruct [
-    :registers,
     :alternate_registers,
     :pc,
     :ir,
@@ -20,7 +21,8 @@ defmodule Trs80Emulator.Z80 do
     :ix,
     :iy,
     :interrupt_reg,
-    :refresh_reg
+    :refresh_reg,
+    registers: %Registers{}
   ]
 
   @doc """
@@ -36,6 +38,7 @@ defmodule Trs80Emulator.Z80 do
         interrupt_reg: <<0::size(08)>>,
         refresh_reg: <<0::size(8)>>
     }
+    |> execute_instruction()
   end
 
   def tick(%{pc: <<high, low>>} = z80, ram) do
@@ -48,6 +51,13 @@ defmodule Trs80Emulator.Z80 do
       end
 
     ram_address = 256 * new_high + new_low
+
     %{z80 | pc: <<new_high, new_low>>, ir: Enum.at(ram, ram_address)}
+    |> execute_instruction()
+  end
+
+  def execute_instruction(%{registers: registers} = z80) do
+    updated_registers = %{registers | a: <<27>>}
+    %{z80 | registers: updated_registers}
   end
 end
