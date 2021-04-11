@@ -35,5 +35,17 @@ defmodule Trs80Emulator.Trs80Test do
       trs80 = Trs80.reset(trs80)
       assert trs80.z80.ir == <<12>>
     end
+
+    test "fetches nstruction after tick", %{trs80: trs80} do
+      trs80 = %{trs80 | ram: [<<12>>, <<13>>, <<14>>]}
+
+      trs80 = Trs80.reset(trs80)
+
+      trs80 = Trs80.tick(trs80)
+      assert trs80.z80.ir == <<13>>
+
+      trs80 = Trs80.tick(trs80)
+      assert trs80.z80.ir == <<14>>
+    end
   end
 end
