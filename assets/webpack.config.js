@@ -41,7 +41,19 @@ module.exports = (env, options) => {
             'css-loader',
             'sass-loader',
           ],
+        },
+      {
+        test: /\.elm$/,
+        exclude: ["/elm-stuff/", "/node_modules"],
+        loader: "elm-webpack-loader",
+        options: {
+          debug: true,
+          // NOTE: `warn` option was removed in Elm 0.19.
+          // Re-enable if desired for use in Elm 0.18.
+          // warn: true,
+          cwd: path.resolve(__dirname, "elm")
         }
+      }
       ]
     },
     plugins: [
