@@ -11,12 +11,12 @@ import Json.Decode exposing (Decoder, field, int, string)
 
 
 type alias Model =
-    {pc: Int}
+    {pc: Maybe Int}
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {pc = 5555}
+    ( {pc = Nothing}
      , Http.get
           { url = "http://localhost:4000/api/state"
                , expect = Http.expectJson GotState decoder
@@ -40,7 +40,7 @@ update msg model =
     NoOp ->
       ( model, Cmd.none )
     GotState (Ok value) ->
-      ({model | pc = value}, Cmd.none)
+      ({model | pc = Just value}, Cmd.none)
     GotState (Err (Http.BadUrl _)) ->
       (model , Cmd.none)
     GotState (Err Http.Timeout) ->
@@ -64,12 +64,18 @@ view model =
          h1 [] [ text "Z80 Emulator" ]
          , div [] [
            div [] [text "PC"]
-           , div [] [ text (String.fromInt model.pc)]
+           , div [] [ text (formatPc model.pc)]
            , button [] [text "Fetch"]
            ]
         ]
 
-
+formatPc : (Maybe Int) -> String
+formatPc val =
+  case val of
+    Nothing ->
+      "Not initialized"
+    Just num ->
+      String.fromInt num
 
 ---- PROGRAM ----
 
