@@ -19,6 +19,12 @@ defmodule Trs80EmulatorWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/api", Trs80EmulatorWeb do
+    pipe_through :api
+
+    get "/state", StateController, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", Trs80EmulatorWeb do
   #   pipe_through :api
