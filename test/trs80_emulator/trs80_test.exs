@@ -29,9 +29,11 @@ defmodule Trs80Emulator.Trs80Test do
       assert trs80.z80.pc == <<0, 2>>
     end
 
-    test "fetches instructions", %{trs80: trs80} do
-      _trs80 = %{trs80 | ram: [<<12>>, <<13>>, <<14>>]}
-      assert 1 == 0
+    test "fetches instruction after reset", %{trs80: trs80} do
+      trs80 = %{trs80 | ram: [<<12>>, <<13>>, <<14>>]}
+
+      trs80 = Trs80.reset(trs80)
+      assert trs80.z80.ir == <<12>>
     end
   end
 end
