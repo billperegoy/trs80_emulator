@@ -50,15 +50,25 @@ defmodule Trs80Emulator.Trs80Test do
   end
 
   describe "executes instructions" do
-    test "single sinstruction", %{trs80: trs80} do
+    test "LD A,B", %{trs80: trs80} do
       # Load a from b
-      # 0b01111000
       registers = %Z80.Registers{b: <<27>>}
       z80 = %Z80{registers: registers}
       trs80 = %{trs80 | z80: z80, ram: [<<0b01111000>>]}
 
       trs80 = Trs80.reset(trs80)
       assert trs80.z80.registers.a == <<27>>
+    end
+
+    test "LD B, A", %{trs80: trs80} do
+      # Load b from a
+      registers = %Z80.Registers{a: <<27>>}
+      z80 = %Z80{registers: registers}
+      trs80 = %{trs80 | z80: z80, ram: [<<0b01000111>>]}
+
+      trs80 = Trs80.reset(trs80)
+
+      assert trs80.z80.registers.b == <<27>>
     end
   end
 end
