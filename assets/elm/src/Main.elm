@@ -61,7 +61,7 @@ view : Model -> Html Msg
 view model =
     div []
         [
-         h1 [] [ text "Z80 Emulator" ]
+         h1 [] [ text "TRS80 Emulator" ]
          , div [] [
            div [] [text "PC"]
            , div [] [ text (formatPc model.pc)]
