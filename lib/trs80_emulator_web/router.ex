@@ -22,7 +22,7 @@ defmodule Trs80EmulatorWeb.Router do
   scope "/api", Trs80EmulatorWeb do
     pipe_through :api
 
-    get "/state", StateController, :index
+    resources "/state", StateController, only: [:create, :index]
   end
 
   # Other scopes may use custom stacks.
