@@ -9,4 +9,14 @@ defmodule Trs80EmulatorWeb.StateController do
     # FIXME - Create a new genserver istance and return the PID
     render(conn, "create.json")
   end
+
+  def reset(conn, _params) do
+    Trs80Emulator.Trs80.Server.reset()
+    render(conn, "index.json")
+  end
+
+  def tick(conn, _params) do
+    Trs80Emulator.Trs80.Server.tick()
+    render(conn, "index.json")
+  end
 end

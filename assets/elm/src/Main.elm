@@ -26,15 +26,6 @@ init =
     ( LoggedOut, Cmd.none )
 
 
-
--- ( LoggedIn { pc = Nothing }
---, Http.get
---   { url = "http://localhost:4000/api/state"
---  , expect = Http.expectJson GotState decoder
--- }
--- )
-
-
 decoder : Decoder Int
 decoder =
     field "pc" int
@@ -47,6 +38,8 @@ decoder =
 type Msg
     = Login
     | Logout
+    | Reset
+    | Tick
     | GotState (Result Http.Error Int)
 
 
@@ -57,6 +50,22 @@ update msg model =
             ( LoggedIn { pc = Nothing }
             , Http.get
                 { url = "http://localhost:4000/api/state"
+                , expect = Http.expectJson GotState decoder
+                }
+            )
+
+        Reset ->
+            ( model
+            , Http.get
+                { url = "http://localhost:4000/api/reset"
+                , expect = Http.expectJson GotState decoder
+                }
+            )
+
+        Tick ->
+            ( model
+            , Http.get
+                { url = "http://localhost:4000/api/tick"
                 , expect = Http.expectJson GotState decoder
                 }
             )
@@ -99,6 +108,8 @@ view model =
                 , div []
                     [ div [] [ text "PC" ]
                     , div [] [ text (formatPc model) ]
+                    , button [ onClick Reset ] [ text "reset" ]
+                    , button [ onClick Tick ] [ text "Tick" ]
                     , button [ onClick Logout ] [ text "Logout" ]
                     ]
                 ]
