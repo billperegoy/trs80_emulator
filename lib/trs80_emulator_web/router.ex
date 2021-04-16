@@ -23,6 +23,9 @@ defmodule Trs80EmulatorWeb.Router do
     pipe_through :api
 
     resources "/state", StateController, only: [:create, :index]
+    # FIXME - this should turn to a post
+    # just making the Elm side simpler to start
+    get "/login", LoginController, :login
   end
 
   # Other scopes may use custom stacks.

@@ -59,3 +59,11 @@ This will be the first prrof of concept
 #
 Trs80Emulator.Trs80.Server.fetch_state()
 ```
+
+# Emulating basic login behavior
+Rather than  build out a real auth system, I just want a simple login and logout
+that will create a new genserver process on login and destroy/forget it on
+logout.
+
+I added the buttons and state to the Elm code and now need to access the correct
+instance based on the login pid.

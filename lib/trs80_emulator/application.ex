@@ -14,9 +14,10 @@ defmodule Trs80Emulator.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Trs80Emulator.PubSub},
       # Start the Endpoint (http/https)
-      Trs80EmulatorWeb.Endpoint
+      Trs80EmulatorWeb.Endpoint,
       # Start a worker by calling: Trs80Emulator.Worker.start_link(arg)
       # {Trs80Emulator.Worker, arg}
+      Trs80Emulator.Trs80.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
