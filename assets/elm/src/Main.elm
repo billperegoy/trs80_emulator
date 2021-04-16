@@ -18,7 +18,9 @@ type Model
 
 
 type alias State =
-    { pc : Maybe Int }
+    { serverName : Maybe String
+    , pc : Maybe Int
+    }
 
 
 init : ( Model, Cmd Msg )
@@ -31,6 +33,11 @@ decoder =
     field "pc" int
 
 
+serverDecoder : Decoder String
+serverDecoder =
+    field "server_name" string
+
+
 
 ---- UPDATE ----
 
@@ -41,16 +48,17 @@ type Msg
     | Reset
     | Tick
     | GotState (Result Http.Error Int)
+    | GotServer (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Login ->
-            ( LoggedIn { pc = Nothing }
+            ( LoggedIn { pc = Nothing, serverName = Nothing }
             , Http.get
-                { url = "http://localhost:4000/api/state"
-                , expect = Http.expectJson GotState decoder
+                { url = "http://localhost:4000/api/login"
+                , expect = Http.expectJson GotServer serverDecoder
                 }
             )
 
@@ -74,21 +82,15 @@ update msg model =
             ( LoggedOut, Cmd.none )
 
         GotState (Ok value) ->
-            ( LoggedIn { pc = Just value }, Cmd.none )
+            ( LoggedIn { pc = Just value, serverName = Nothing }, Cmd.none )
 
-        GotState (Err (Http.BadUrl _)) ->
+        GotState _ ->
             ( model, Cmd.none )
 
-        GotState (Err Http.Timeout) ->
-            ( model, Cmd.none )
+        GotServer (Ok value) ->
+            ( LoggedIn { pc = Nothing, serverName = Just value }, Cmd.none )
 
-        GotState (Err Http.NetworkError) ->
-            ( model, Cmd.none )
-
-        GotState (Err (Http.BadStatus _)) ->
-            ( model, Cmd.none )
-
-        GotState (Err (Http.BadBody _)) ->
+        GotServer _ ->
             ( model, Cmd.none )
 
 

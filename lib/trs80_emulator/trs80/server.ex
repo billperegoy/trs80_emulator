@@ -4,8 +4,8 @@ defmodule Trs80Emulator.Trs80.Server do
   alias Trs80Emulator.Trs80
 
   # API
-  def start_link(_opts) do
-    GenServer.start_link(__MODULE__, %Trs80{}, name: :server)
+  def start_link(name) do
+    GenServer.start_link(__MODULE__, %Trs80{}, name: via_tuple(name))
   end
 
   def fetch_state do
@@ -18,6 +18,12 @@ defmodule Trs80Emulator.Trs80.Server do
 
   def tick do
     GenServer.call(:server, :tick)
+  end
+
+  defp via_tuple(server_name) do
+    # And the tuple always follow the same format:
+    # {:via, module_name, term}
+    {:via, Trs80.Registry, {:server_pool, server_name}}
   end
 
   @impl true

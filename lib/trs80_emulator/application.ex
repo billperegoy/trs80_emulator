@@ -17,7 +17,8 @@ defmodule Trs80Emulator.Application do
       Trs80EmulatorWeb.Endpoint,
       # Start a worker by calling: Trs80Emulator.Worker.start_link(arg)
       # {Trs80Emulator.Worker, arg}
-      Trs80Emulator.Trs80.Supervisor
+      {DynamicSupervisor, strategy: :one_for_one, name: Trs80Emulator.Trs80.Supervisor},
+      Trs80Emulator.Trs80.Registry
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
